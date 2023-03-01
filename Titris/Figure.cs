@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Titris
 {
-    class Figure
+    abstract class Figure
     {
         protected Point[] points = new Point[4];
 
@@ -30,6 +30,11 @@ namespace Titris
             {
                 p.Hide();
             }
+        }
+
+        public abstract void Rotate()
+        {
+
         }
     }
 }
