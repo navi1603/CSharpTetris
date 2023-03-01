@@ -9,7 +9,8 @@ namespace Titris
             Console.SetWindowSize(40, 30);
             Console.SetBufferSize(40, 30);
 
-            
+            FigureGenerator generator = new FigureGenerator(20, 0, "*");
+            Figure s = generator.GetNewFigure();
         }
     }
 }
