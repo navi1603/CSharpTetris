@@ -9,6 +9,7 @@ namespace Titris
         public int x;
         public int y;
         public char c;
+        private Point point;
 
         public Point()
         {
@@ -20,6 +21,13 @@ namespace Titris
             this.x = x;
             this.y = y;
             this.c = c;
+        }
+
+        public Point(Point point)
+        {
+            x = point.x;
+            y = point.y;
+            c = point.c;
         }
 
         public void Draw()

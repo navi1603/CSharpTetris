@@ -6,7 +6,8 @@ namespace Titris
 {
     abstract class Figure
     {
-        protected Point[] points = new Point[4];
+        const int LENGHT = 4;
+        protected Point[] points = new Point[LENGHT];
 
         public void Draw()
         {
@@ -16,15 +17,15 @@ namespace Titris
             }
         }
 
-        public void Move(Direction dir)
-        {
-            Hide();
-            foreach(Point p in points)
-            {
-                p.Move(dir);
-            }
-            Draw();
-        }
+        //public void Move(Direction dir)
+        //{
+        //    Hide();
+        //    foreach(Point p in points)
+        //    {
+        //        p.Move(dir);
+        //    }
+        //    Draw();
+        //}
 
         public void Hide()
         {
@@ -35,6 +36,46 @@ namespace Titris
         }
 
         public abstract void Rotate();
-               
+
+        internal void TryMove(Direction dir)
+        {
+            Hide();
+            var clone = Clone();
+            Move(clone, dir);
+            if (VerifyPosition(clone))
+            {
+                points = clone;
+            }
+
+            Draw();
+        }
+
+        private bool VerifyPosition(Point[] plist)
+        {
+            foreach(var p in plist)
+            {
+                if (p.x < 0 || p.y < 0 || p.x >= 40 || p.y >= 30)
+                    return false;
+            }
+            return true;
+        }
+
+        private void Move(Point[] plist, Direction dir)
+        {
+            foreach(var p in plist)
+            {
+                p.Move(dir);
+            }
+        }
+
+        private Point[] Clone()
+        {
+            var newPoints = new Point[LENGHT];
+            for(int i = 0; i < LENGHT; i++)
+            {
+                newPoints[0] = new Point (points[i]);
+            }
+            return newPoints;
+        }
     }
 }

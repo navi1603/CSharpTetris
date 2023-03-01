@@ -26,13 +26,13 @@ namespace Titris
         {
             switch(key.Key){
                 case ConsoleKey.LeftArrow:
-                    currentFigare.Move(Direction.LEFT);
+                    currentFigare.TryMove(Direction.LEFT);
                     break;
                 case ConsoleKey.RightArrow:
-                    currentFigare.Move(Direction.RIGHT);
+                    currentFigare.TryMove(Direction.RIGHT);
                     break;
                 case ConsoleKey.DownArrow:
-                    currentFigare.Move(Direction.DOWN);
+                    currentFigare.TryMove(Direction.DOWN);
                     break;
             }
         }
