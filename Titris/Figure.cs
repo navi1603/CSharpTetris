@@ -73,7 +73,7 @@ namespace Titris
             var newPoints = new Point[LENGHT];
             for(int i = 0; i < LENGHT; i++)
             {
-                newPoints[0] = new Point (points[i]);
+                newPoints[i] = new Point (points[i]);
             }
             return newPoints;
         }
