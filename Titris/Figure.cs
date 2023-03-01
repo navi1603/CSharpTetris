@@ -18,10 +18,12 @@ namespace Titris
 
         public void Move(Direction dir)
         {
+            Hide();
             foreach(Point p in points)
             {
                 p.Move(dir);
             }
+            Draw();
         }
 
         public void Hide()
@@ -32,9 +34,7 @@ namespace Titris
             }
         }
 
-        public abstract void Rotate()
-        {
-
-        }
+        public abstract void Rotate();
+               
     }
 }
