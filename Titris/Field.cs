@@ -6,7 +6,36 @@ namespace Titris
 {
     static class Field
     {
-        public const int WIDHT = 40;
-        public const int HIEGHT = 30;
+        private static int _widht = 40;
+        private static int _height = 30;
+        
+        public static int Widht
+        {
+            get 
+            {
+                return _widht;
+            }
+
+            set
+            {
+                _widht = value;
+                Console.SetWindowSize(Field.Widht, Field.Height);
+                Console.SetBufferSize(Field.Widht, Field.Height);
+            }
+        }
+
+        public static int Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                _height = value;
+                Console.SetWindowSize(Field.Widht, Field.Height);
+                Console.SetBufferSize(Field.Widht, Field.Height);
+            }
+        }
     }
 }

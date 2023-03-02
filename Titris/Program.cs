@@ -6,8 +6,8 @@ namespace Titris
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(Field.WIDHT, Field.HIEGHT);
-            Console.SetBufferSize(Field.WIDHT, Field.HIEGHT);
+            Console.SetWindowSize(Field.Widht, Field.Height);
+            Console.SetBufferSize(Field.Widht, Field.Height);
 
             FigureGenerator generator = new FigureGenerator(20, 0, '*');
             Figure currentFigare = generator.GetNewFigure();

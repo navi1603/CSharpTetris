@@ -17,16 +17,6 @@ namespace Titris
             }
         }
 
-        //public void Move(Direction dir)
-        //{
-        //    Hide();
-        //    foreach(Point p in points)
-        //    {
-        //        p.Move(dir);
-        //    }
-        //    Draw();
-        //}
-
         public void Hide()
         {
             foreach(Point p in points)
@@ -54,7 +44,7 @@ namespace Titris
         {
             foreach(var p in plist)
             {
-                if (p.x < 0 || p.y < 0 || p.x >= Field.WIDHT || p.y >= Field.HIEGHT)
+                if (p.X < 0 || p.Y < 0 || p.X >= Field.Widht || p.Y >= Field.Height)
                     return false;
             }
             return true;
