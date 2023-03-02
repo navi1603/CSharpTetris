@@ -6,8 +6,8 @@ namespace Titris
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(40, 30);
-            Console.SetBufferSize(40, 30);
+            Console.SetWindowSize(Field.WIDHT, Field.HIEGHT);
+            Console.SetBufferSize(Field.WIDHT, Field.HIEGHT);
 
             FigureGenerator generator = new FigureGenerator(20, 0, '*');
             Figure currentFigare = generator.GetNewFigure();
@@ -34,7 +34,7 @@ namespace Titris
                 case ConsoleKey.DownArrow:
                     currentFigare.TryMove(Direction.DOWN);
                     break;
-;                case ConsoleKey.Backspace:
+;                case ConsoleKey.Spacebar:
                     currentFigare.TryRotate();
                     break;
             }
