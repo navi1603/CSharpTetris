@@ -18,7 +18,8 @@ namespace Titris
 
         public Figure GetNewFigure()
         {
-            if(rand.Next(0,2) == 0){
+            if(rand.Next(0,2) == 0)
+            {
                 return new Square(_x, _y, _c);
             }
             else

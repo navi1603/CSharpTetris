@@ -52,7 +52,7 @@ namespace Titris
 
         internal void Hide()
         {
-            Console.SetCursorPosition (X,Y);
+            Console.SetCursorPosition(X, Y);
             Console.Write(" ");
         }
     }
