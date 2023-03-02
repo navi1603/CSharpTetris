@@ -19,8 +19,8 @@ namespace Titris
             set
             {
                 _widht = value;
-                Console.SetWindowSize(Field.Widht, Field.Height);
-                Console.SetBufferSize(Field.Widht, Field.Height);
+                Console.SetWindowSize(value, Field.Height);
+                Console.SetBufferSize(value, Field.Height);
             }
         }
 
@@ -33,8 +33,8 @@ namespace Titris
             set
             {
                 _height = value;
-                Console.SetWindowSize(Field.Widht, Field.Height);
-                Console.SetBufferSize(Field.Widht, Field.Height);
+                Console.SetWindowSize(Field.Widht, value);
+                Console.SetBufferSize(Field.Widht, value);
             }
         }
 
