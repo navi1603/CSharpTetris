@@ -35,9 +35,7 @@ namespace Titris
                     currentFigare.TryMove(Direction.DOWN);
                     break;
 ;                case ConsoleKey.Backspace:
-                    currentFigare.Hide();
-                    currentFigare.Rotate();
-                    currentFigare.Draw();
+                    currentFigare.TryRotate();
                     break;
             }
         }

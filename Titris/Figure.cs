@@ -35,7 +35,7 @@ namespace Titris
             }
         }
 
-        public abstract void Rotate();
+        public abstract void Rotate(Point [] plist);
 
         internal void TryMove(Direction dir)
         {
@@ -76,6 +76,17 @@ namespace Titris
                 newPoints[i] = new Point (points[i]);
             }
             return newPoints;
+        }
+        internal void TryRotate()
+        {
+            Hide();
+            var clone = Clone();
+            Rotate(clone);
+            if (VerifyPosition(clone))
+            {
+                points = clone;
+            }
+            Draw();
         }
     }
 }
