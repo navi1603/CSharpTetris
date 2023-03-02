@@ -59,16 +59,12 @@ namespace Titris
             return result;
         }
 
-        //private bool VerifyPosition(Point[] plist)
-        //{
-        //    foreach(var p in plist)
-        //    {
-        //        if (p.X < 0 || p.Y < 0 || p.X >= Field.Widht || p.Y >= Field.Height)
-        //            return false;
-        //    }
-        //    return true;
-        //}
-        private Result VerifyPosition(Point[] newPoints)
+        internal bool IsOnTop()
+        {
+            return Points[0].Y == 0;
+        }
+
+         private Result VerifyPosition(Point[] newPoints)
         {
             foreach (var p in newPoints)
             {

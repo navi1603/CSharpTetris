@@ -57,13 +57,29 @@ namespace Titris
             {
                 Field.AddFigure(currentFigare);
                 Field.TryDeleteLines();
-                currentFigare = generator.GetNewFigure();
-                return true;
+
+                if (currentFigare.IsOnTop())
+                {
+                    WriteGameOver();
+                    timer.Elapsed -= OnTimedEvent;
+                    return true;
+                }
+                else
+                {
+                    currentFigare = generator.GetNewFigure();
+                    return true;
+                }
             }
             else
             {
                 return false;
             }
+        }
+
+        private static void WriteGameOver()
+        {
+            Console.SetCursorPosition(Field.Widht / 2 - 8, Field.Height / 2);
+            Console.WriteLine("G A M E  O V E R");
         }
 
         private static Result HandleKey(Figure f, ConsoleKeyInfo key)
