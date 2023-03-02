@@ -6,6 +6,6 @@ namespace Titris
 {
     public enum Result
     {
-        BORDER_STRIKE, DOWN_DORDER_STRIKE
+        SECCESS, DOWN_BORDER_STRIKE, BORDER_STRIKE, HEAP_STRIKE
     }
 }

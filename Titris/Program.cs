@@ -4,12 +4,13 @@ namespace Titris
 {
     class Program
     {
+        static FigureGenerator generator;
         static void Main(string[] args)
         {
             Console.SetWindowSize(Field.Widht, Field.Height);
             Console.SetBufferSize(Field.Widht, Field.Height);
 
-            FigureGenerator generator = new FigureGenerator(20, 0, '*');
+            generator = new FigureGenerator(Field.Widht / 2, 0, Drawer.DEFAULT_SYMBOLE);
             Figure currentFigare = generator.GetNewFigure();
 
             while (true)
@@ -17,27 +18,40 @@ namespace Titris
                 if (Console.KeyAvailable)
                 {
                     var key = Console.ReadKey();
-                    HandleKey(currentFigare, key);
+                    var result = HandleKey(currentFigare, key);
+                    ProcessResult(result, ref currentFigare);
                 }
             }
         }
 
-        private static void HandleKey(Figure currentFigare, ConsoleKeyInfo key)
+        private static bool ProcessResult(Result result, ref Figure currentFigare)
+        {
+            if(result == Result.HEAP_STRIKE || result == Result.DOWN_BORDER_STRIKE)
+            {
+                Field.AddFigure(currentFigare);
+                Field.TryDeleteLines();
+                currentFigare = generator.GetNewFigure();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static Result HandleKey(Figure f, ConsoleKeyInfo key)
         {
             switch(key.Key){
                 case ConsoleKey.LeftArrow:
-                    currentFigare.TryMove(Direction.LEFT);
-                    break;
+                    return f.TryMove(Direction.LEFT);
                 case ConsoleKey.RightArrow:
-                    currentFigare.TryMove(Direction.RIGHT);
-                    break;
+                    return f.TryMove(Direction.RIGHT);
                 case ConsoleKey.DownArrow:
-                    currentFigare.TryMove(Direction.DOWN);
-                    break;
+                    return f.TryMove(Direction.DOWN);
 ;                case ConsoleKey.Spacebar:
-                    currentFigare.TryRotate();
-                    break;
+                    return f.TryRotate();
             }
+            return Result.SECCESS;
         }
     }
 }

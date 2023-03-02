@@ -6,8 +6,8 @@ namespace Titris
 {
     static class Field
     {
-        private static int _widht = 40;
-        private static int _height = 30;
+        private static int _widht = 20;
+        private static int _height = 20;
 
         public static int Widht
         {
@@ -46,6 +46,57 @@ namespace Titris
             for(int i = 0; i < Height; i++)
             {
                 _heap[i] = new bool[Widht];
+            }
+        }
+
+        public static void TryDeleteLines()
+        {
+            for(int j = 0; j < Height; j++)
+            {
+                int counter = 0;
+
+                for(int i = 0; i < Widht; i++)
+                {
+                    if (_heap[j][i])
+                        counter++;
+                }
+                if(counter == Widht)
+                {
+                    DeleteLines(j);
+                    Redraw();
+                }
+            }
+        }
+
+        private static void Redraw()
+        {
+           for (int j = 0; j < Height; j++)
+            {
+                for (int i = 0; i < Widht; i++)
+                {
+                    if (_heap[j][i])
+                        Drawer.DrawPoint(i, j);
+                    else
+                        Drawer.HidePoint(i, j);
+                }
+            }
+        }
+
+        private static void DeleteLines(int line)
+        {
+            for(int j = line; j >= 0; j--)
+            {
+                for (int i = 0; i < Widht; i++)
+                {
+                    if(j == 0)
+                    {
+                        _heap[j][i] = false;
+                    }
+                    else
+                    {
+                        _heap[j][i] = _heap[j - 1][i];
+                    }
+                }
             }
         }
 
