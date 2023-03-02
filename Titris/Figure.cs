@@ -25,37 +25,50 @@ namespace Titris
             }
         }
 
-        public abstract void Rotate(Point [] plist);
+        public abstract void Rotate();
 
         internal Result TryMove(Direction dir)
         {
             Hide();
-            var clone = Clone();
-            Move(clone, dir);
+            Move(dir);
 
-            var result = VerifyPosition(clone);
-            if(result == Result.SECCESS)
+            var result = VerifyPosition();
+            if(result != Result.SECCESS)
             {
-                Points = clone;
+                Move(Reverse(dir));
             }
 
             Draw();
             return result;
         }
 
+        private Direction Reverse(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.LEFT:
+                    return Direction.RIGHT;
+                case Direction.RIGHT:
+                    return Direction.LEFT;
+                case Direction.DOWN:
+                    return Direction.UP;
+                case Direction.UP:
+                    return Direction.DOWN;
+            }
+            return dir;
+        }
+
         internal Result TryRotate()
         {
             Hide();
-            var clone = Clone();
-            Rotate(clone);
+            Rotate();
 
-            var result = VerifyPosition(clone);
-            if (result == Result.SECCESS)
+            var result = VerifyPosition();
+            if (result != Result.SECCESS)
             {
-                Points = clone;
+                Rotate();
             }
             Draw();
-
             return result;
         }
 
@@ -64,9 +77,9 @@ namespace Titris
             return Points[0].Y == 0;
         }
 
-         private Result VerifyPosition(Point[] newPoints)
+         private Result VerifyPosition()
         {
-            foreach (var p in newPoints)
+            foreach (var p in Points)
             {
                 if (p.Y >= Field.Height)
                     return Result.DOWN_BORDER_STRIKE;
@@ -78,22 +91,12 @@ namespace Titris
             return Result.SECCESS;
         }
 
-        private void Move(Point[] plist, Direction dir)
+        private void Move(Direction dir)
         {
-            foreach(var p in plist)
+            foreach(var p in Points)
             {
                 p.Move(dir);
             }
-        }
-
-        private Point[] Clone()
-        {
-            var newPoints = new Point[LENGHT];
-            for(int i = 0; i < LENGHT; i++)
-            {
-                newPoints[i] = new Point (Points[i]);
-            }
-            return newPoints;
         }
     }
 }

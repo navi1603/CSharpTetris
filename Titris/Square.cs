@@ -15,6 +15,6 @@ namespace Titris
             Draw();
         }
 
-        public override void Rotate(Point[] plist) {}
+        public override void Rotate() {}
     }
 }
