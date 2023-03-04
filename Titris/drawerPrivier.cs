@@ -6,7 +6,7 @@ namespace Titris
 {
     static class DrawerProvier
     {
-        private static IDrawer _drawer = new ConsoleDrawer();
+        private static IDrawer _drawer = new GuiDrawer();
 
         public static IDrawer Drawer
         {

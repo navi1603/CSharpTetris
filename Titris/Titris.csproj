@@ -2,7 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net4.7.2</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="SmallBasicLibrary">
+      <HintPath>C:\Program Files (x86)\Microsoft\Small Basic\SmallBasicLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
