@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tetris;
 
 namespace Titris
 {
@@ -37,7 +38,6 @@ namespace Titris
             {
                 Move(Reverse(dir));
             }
-
             Draw();
             return result;
         }
@@ -83,9 +83,9 @@ namespace Titris
             {
                 if (p.Y >= Field.Height)
                     return Result.DOWN_BORDER_STRIKE;
-                if (p.X >= Field.Widht || p.X < 0 || p.Y < 0)
+                if (p.X >= Field.Width || p.X < 0 || p.Y < 0)
                     return Result.BORDER_STRIKE;
-                if (Field.CheckStricke(p))
+                if (Field.CheckStrike(p))
                     return Result.HEAP_STRIKE;
             }
             return Result.SECCESS;

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Timers;
 using System.Threading;
+using System.Timers;
+using Titris;
 
-namespace Titris
+namespace Tetris
 {
     class Program
     {
@@ -10,18 +11,15 @@ namespace Titris
         static System.Timers.Timer timer;
         static private Object _lockObject = new object();
 
-        static Figure currentFigare;
+
+        static Figure currentFigure;
         static FigureGenerator generator;
         static void Main(string[] args)
         {
-            Console.SetWindowSize(Field.Widht, Field.Height);
-            Console.SetBufferSize(Field.Widht, Field.Height);
+            DrawerProvier.Drawer.InitField();
 
-            IIDrawer drawer = new ConsoleDrawer();
-            Test(drawer);
-
-            generator = new FigureGenerator(Field.Widht / 2, 0, Drawer.DEFAULT_SYMBOLE);
-            currentFigare = generator.GetNewFigure();
+            generator = new FigureGenerator(Field.Width / 2, 0);
+            currentFigure = generator.GetNewFigure();
             SetTimer();
 
             while (true)
@@ -30,21 +28,56 @@ namespace Titris
                 {
                     var key = Console.ReadKey();
                     Monitor.Enter(_lockObject);
-                    var result = HandleKey(currentFigare, key);
-                    ProcessResult(result, ref currentFigare);
+                    var result = HandleKey(currentFigure, key.Key);
+                    ProcessResult(result, ref currentFigure);
                     Monitor.Exit(_lockObject);
                 }
             }
         }
 
-        private static void Test(IIDrawer drawer)
+        private static bool ProcessResult(Result result, ref Figure currentFigure)
         {
-            drawer.DrawPoint(5,6);
+            if (result == Result.HEAP_STRIKE || result == Result.DOWN_BORDER_STRIKE)
+            {
+                Field.AddFigure(currentFigure);
+                Field.TryDeleteLines();
+
+                if (currentFigure.IsOnTop())
+                {
+                    DrawerProvier.Drawer.WriteGameOver();
+                    timer.Elapsed -= OnTimedEvent;
+                    return true;
+                }
+                else
+                {
+                    currentFigure = generator.GetNewFigure();
+                    return false;
+                }
+            }
+            else
+                return false;
         }
 
+        private static Result HandleKey(Figure f, ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.LeftArrow:
+                    return f.TryMove(Direction.LEFT);
+                case ConsoleKey.RightArrow:
+                    return f.TryMove(Direction.RIGHT);
+                case ConsoleKey.DownArrow:
+                    return f.TryMove(Direction.DOWN);
+                case ConsoleKey.Spacebar:
+                    return f.TryRotate();
+            }
+            return Result.SECCESS;
+        }
         private static void SetTimer()
         {
+            // Create a timer with a two second interval.
             timer = new System.Timers.Timer(TIMER_INTERVAL);
+            // Hook up the Elapsed event for the timer. 
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -53,56 +86,9 @@ namespace Titris
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             Monitor.Enter(_lockObject);
-            var result = currentFigare.TryMove(Direction.DOWN);
-            ProcessResult(result, ref currentFigare);
+            var result = currentFigure.TryMove(Direction.DOWN);
+            ProcessResult(result, ref currentFigure);
             Monitor.Exit(_lockObject);
-
-        }
-
-        private static bool ProcessResult(Result result, ref Figure currentFigare)
-        {
-            if(result == Result.HEAP_STRIKE || result == Result.DOWN_BORDER_STRIKE)
-            {
-                Field.AddFigure(currentFigare);
-                Field.TryDeleteLines();
-
-                if (currentFigare.IsOnTop())
-                {
-                    WriteGameOver();
-                    timer.Elapsed -= OnTimedEvent;
-                    return true;
-                }
-                else
-                {
-                    currentFigare = generator.GetNewFigure();
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static void WriteGameOver()
-        {
-            Console.SetCursorPosition(Field.Widht / 2 - 8, Field.Height / 2);
-            Console.WriteLine("G A M E  O V E R");
-        }
-
-        private static Result HandleKey(Figure f, ConsoleKeyInfo key)
-        {
-            switch(key.Key){
-                case ConsoleKey.LeftArrow:
-                    return f.TryMove(Direction.LEFT);
-                case ConsoleKey.RightArrow:
-                    return f.TryMove(Direction.RIGHT);
-                case ConsoleKey.DownArrow:
-                    return f.TryMove(Direction.DOWN);
-;                case ConsoleKey.Spacebar:
-                    return f.TryRotate();
-            }
-            return Result.SECCESS;
         }
     }
 }

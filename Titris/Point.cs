@@ -9,29 +9,23 @@ namespace Titris
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public char C { get; set; }
-
         public Point() {}
 
-        public Point(int x, int y, char c)
+        public Point(int x, int y)
         {
             X = x;
             Y = y;
-            C = c;
         }
 
         public Point(Point point)
         {
             X = point.X;
             Y = point.Y;
-            C = point.C;
         }
 
         public void Draw()
         {
-            Console.SetCursorPosition(X, Y);
-            Console.Write(C);
-            Console.SetCursorPosition(0, 0);
+            DrawerProvier.Drawer.DrawPoint(X, Y);
         }
 
         internal void Move(Direction dir)
@@ -47,13 +41,15 @@ namespace Titris
                 case Direction.RIGHT:
                     X += 1;
                     break;
+                case Direction.UP:
+                    Y -= 1;
+                    break;
             }
         }
 
         internal void Hide()
         {
-            Console.SetCursorPosition(X, Y);
-            Console.Write(" ");
+            DrawerProvier.Drawer.HidePoint(X, Y);
         }
     }
 }
