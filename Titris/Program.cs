@@ -17,6 +17,9 @@ namespace Titris
             Console.SetWindowSize(Field.Widht, Field.Height);
             Console.SetBufferSize(Field.Widht, Field.Height);
 
+            IIDrawer drawer = new ConsoleDrawer();
+            Test(drawer);
+
             generator = new FigureGenerator(Field.Widht / 2, 0, Drawer.DEFAULT_SYMBOLE);
             currentFigare = generator.GetNewFigure();
             SetTimer();
@@ -32,6 +35,11 @@ namespace Titris
                     Monitor.Exit(_lockObject);
                 }
             }
+        }
+
+        private static void Test(IIDrawer drawer)
+        {
+            drawer.DrawPoint(5,6);
         }
 
         private static void SetTimer()

@@ -4,7 +4,21 @@ using System.Text;
 
 namespace Titris
 {
-    internal interface ConsoleDrawer2
+    internal class ConsoleDrawer2 : IIDrawer
     {
+        public void DrawPoint(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write('#');
+            Console.SetCursorPosition(0, 0);
+        }
+
+        public void HidePoint(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(' ');
+            Console.SetCursorPosition(0, 0);
+        }
     }
 }
+

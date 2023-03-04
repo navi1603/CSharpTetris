@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Titris
 {
-    internal class ConsoleDrawer : iDrawer
+    internal class ConsoleDrawer : IIDrawer
     {
         public void DrawPoint(int x, int y)
         {
