@@ -17,7 +17,6 @@ namespace Titris
                 p.Draw();
             }
         }
-
         public void Hide()
         {
             foreach(Point p in Points)

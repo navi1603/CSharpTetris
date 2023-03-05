@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Timers;
 using Titris;
+using Microsoft.SmallBasic.Library;
 
 namespace Tetris
 {
@@ -13,26 +14,29 @@ namespace Tetris
 
 
         static Figure currentFigure;
-        static FigureGenerator generator;
+        static FigureGenerator factory = new FigureGenerator(Field.Width / 2, 0);
+        private static bool gameOver = false;
+
         static void Main(string[] args)
         {
             DrawerProvier.Drawer.InitField();
 
-            generator = new FigureGenerator(Field.Width / 2, 0);
-            currentFigure = generator.GetNewFigure();
             SetTimer();
 
-            while (true)
-            {
-                if (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey();
-                    Monitor.Enter(_lockObject);
-                    var result = HandleKey(currentFigure, key.Key);
-                    ProcessResult(result, ref currentFigure);
-                    Monitor.Exit(_lockObject);
-                }
-            }
+            currentFigure = factory.GetNewFigure();
+            currentFigure.Draw();
+            GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
+        }
+
+        private static void GraphicsWindow_KeyDown()
+        {
+            Monitor.Enter(_lockObject);
+            var result = HandleKey(currentFigure, GraphicsWindow.LastKey);
+
+            if (GraphicsWindow.LastKey == "Down")
+                gameOver = ProcessResult(result, ref currentFigure);
+
+            Monitor.Exit(_lockObject);
         }
 
         private static bool ProcessResult(Result result, ref Figure currentFigure)
@@ -45,12 +49,11 @@ namespace Tetris
                 if (currentFigure.IsOnTop())
                 {
                     DrawerProvier.Drawer.WriteGameOver();
-                    timer.Elapsed -= OnTimedEvent;
                     return true;
                 }
                 else
                 {
-                    currentFigure = generator.GetNewFigure();
+                    currentFigure = factory.GetNewFigure();
                     return false;
                 }
             }
@@ -58,26 +61,24 @@ namespace Tetris
                 return false;
         }
 
-        private static Result HandleKey(Figure f, ConsoleKey key)
+        private static Result HandleKey(Figure f, String key)
         {
             switch (key)
             {
-                case ConsoleKey.LeftArrow:
+                case "Left":
                     return f.TryMove(Direction.LEFT);
-                case ConsoleKey.RightArrow:
+                case "Right":
                     return f.TryMove(Direction.RIGHT);
-                case ConsoleKey.DownArrow:
+                case "Down":
                     return f.TryMove(Direction.DOWN);
-                case ConsoleKey.Spacebar:
+                case "Space":
                     return f.TryRotate();
             }
             return Result.SECCESS;
         }
         private static void SetTimer()
         {
-            // Create a timer with a two second interval.
             timer = new System.Timers.Timer(TIMER_INTERVAL);
-            // Hook up the Elapsed event for the timer. 
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -87,7 +88,9 @@ namespace Tetris
         {
             Monitor.Enter(_lockObject);
             var result = currentFigure.TryMove(Direction.DOWN);
-            ProcessResult(result, ref currentFigure);
+            gameOver = ProcessResult(result, ref currentFigure);
+            if (gameOver)
+                timer.Stop();
             Monitor.Exit(_lockObject);
         }
     }

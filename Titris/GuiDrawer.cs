@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.SmallBasic.Library;
+﻿using Microsoft.SmallBasic.Library;
 using Tetris;
 
 namespace Titris
@@ -32,7 +29,9 @@ namespace Titris
 
         public void WriteGameOver()
         {
-            throw new NotImplementedException();
+            GraphicsWindow.BrushColor = "DarkDlue";
+            GraphicsWindow.FontSize = 20;
+            GraphicsWindow.DrawText((Field.Width / 2 - 4) * SIZE, (Field.Height / 2)* SIZE, "G A M E  O V E R");
         }
     }
 }
